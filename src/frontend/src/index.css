@@ -1,0 +1,114 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Poppins:wght@300;400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --radius: 0.75rem;
+
+    /* Pink & Gold Beauty Theme */
+    /* background: #fff0f7 light pink */
+    --background: 0.97 0.018 350;
+    /* foreground: near black */
+    --foreground: 0.18 0.02 350;
+    /* card: white */
+    --card: 1 0 0;
+    --card-foreground: 0.18 0.02 350;
+    --popover: 1 0 0;
+    --popover-foreground: 0.18 0.02 350;
+    /* primary: #e91e8c hot pink */
+    --primary: 0.55 0.22 350;
+    --primary-foreground: 1 0 0;
+    /* secondary: #fce4ec medium pink */
+    --secondary: 0.94 0.04 5;
+    --secondary-foreground: 0.35 0.12 350;
+    /* muted */
+    --muted: 0.95 0.01 350;
+    --muted-foreground: 0.5 0.06 350;
+    /* accent: gold #d4a017 */
+    --accent: 0.72 0.16 75;
+    --accent-foreground: 1 0 0;
+    --destructive: 0.577 0.245 27.325;
+    --destructive-foreground: 1 0 0;
+    /* border: light pink */
+    --border: 0.9 0.04 5;
+    --input: 0.92 0.03 5;
+    --ring: 0.55 0.22 350;
+    --chart-1: 0.55 0.22 350;
+    --chart-2: 0.72 0.16 75;
+    --chart-3: 0.65 0.15 315;
+    --chart-4: 0.8 0.12 25;
+    --chart-5: 0.7 0.18 300;
+    --sidebar: 0.98 0.01 350;
+    --sidebar-foreground: 0.18 0.02 350;
+    --sidebar-primary: 0.55 0.22 350;
+    --sidebar-primary-foreground: 1 0 0;
+    --sidebar-accent: 0.94 0.04 5;
+    --sidebar-accent-foreground: 0.35 0.12 350;
+    --sidebar-border: 0.9 0.04 5;
+    --sidebar-ring: 0.55 0.22 350;
+  }
+
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: "Poppins", sans-serif;
+  }
+  h1,
+  h2,
+  h3,
+  .font-display {
+    font-family: "Playfair Display", serif;
+  }
+}
+
+@layer utilities {
+  .btn-primary {
+    @apply bg-primary text-primary-foreground rounded-full px-6 py-2 font-semibold transition-all hover:opacity-90 hover:scale-105 active:scale-95;
+    background: linear-gradient(
+      135deg,
+      oklch(0.55 0.22 350),
+      oklch(0.45 0.2 350)
+    );
+  }
+  .btn-gold {
+    @apply rounded-full px-6 py-2 font-semibold transition-all hover:opacity-90;
+    background: linear-gradient(
+      135deg,
+      oklch(0.72 0.16 75),
+      oklch(0.62 0.14 75)
+    );
+    color: white;
+  }
+  .card-pink {
+    @apply bg-card rounded-2xl border border-border transition-all hover:shadow-lg;
+    box-shadow: 0 2px 12px oklch(0.55 0.22 350 / 0.1);
+  }
+  .card-pink:hover {
+    box-shadow: 0 4px 20px oklch(0.55 0.22 350 / 0.2);
+    border-color: oklch(0.55 0.22 350 / 0.4);
+  }
+  .sparkle-divider {
+    @apply flex items-center justify-center gap-3 text-accent my-6 text-xl;
+  }
+  .discount-badge {
+    @apply absolute top-3 right-3 rounded-full px-2 py-1 text-xs font-bold text-white;
+    background: linear-gradient(
+      135deg,
+      oklch(0.55 0.22 350),
+      oklch(0.45 0.2 350)
+    );
+  }
+  .gradient-hero {
+    background: linear-gradient(
+      135deg,
+      oklch(0.97 0.025 350) 0%,
+      oklch(0.94 0.06 5) 50%,
+      oklch(0.96 0.03 350) 100%
+    );
+  }
+}

@@ -1,0 +1,156 @@
+// Version: 1.0.0
+type Coupon__100505319 =
+  {
+    code : Text;
+    discountAmountINR : Nat;
+    isActive : Bool;
+    maxUsesPerUser : Nat
+  };
+type CustomerProfileV1__1028482321 =
+  {
+    address : Text;
+    city : Text;
+    gmail : Text;
+    name : Text;
+    phone : Text;
+    pincode : Text;
+    profileComplete : Bool
+  };
+type CustomerProfile__89315307 =
+  {
+    address : Text;
+    city : Text;
+    gmail : Text;
+    landmark : Text;
+    name : Text;
+    phone : Text;
+    pincode : Text;
+    profileComplete : Bool
+  };
+type Data__791452850<K, V> =
+  {var count : Nat__490723111; kvs : [var ?(K, V)]};
+type DeliveryRule__253128428 =
+  {chargeINR : Nat; isDefault : Bool; zoneOrPincode : Text};
+type Internal__8484328<K, V> =
+  {children : [var ?Node__46230540<K, V>]; data : Data__791452850<K, V>};
+type Leaf__809889148<K, V> = {data : Data__791452850<K, V>};
+type Map__158565046<K, V> = Map__297112838<K, V>;
+type Map__297112838<K, V> =
+  {var root : Node__46230540<K, V>; var size : Nat__490723111};
+type Map__605269027<K, V> = Map__158565046<K, V>;
+type Nat__490723111 = Nat__920180692;
+type Nat__920180692 = Nat;
+type Node__46230540<K, V> =
+  {#internal : Internal__8484328<K, V>; #leaf : Leaf__809889148<K, V>};
+type OrderItem__592186033 = {price : Nat; productId : Nat; quantity : Nat};
+type OrderV1__793055768 =
+  {
+    address : Text;
+    city : Text;
+    createdAt : Int;
+    customerId : Principal;
+    customerName : Text;
+    items : [OrderItem__592186033];
+    phone : Text;
+    pincode : Text;
+    razorpayOrderId : Text;
+    status : Text;
+    totalINR : Nat
+  };
+type Order__762448211 =
+  {
+    address : Text;
+    city : Text;
+    createdAt : Int;
+    customerId : Principal;
+    customerName : Text;
+    items : [OrderItem__592186033];
+    landmark : Text;
+    phone : Text;
+    pincode : Text;
+    razorpayOrderId : Text;
+    status : Text;
+    totalINR : Nat
+  };
+type Product__853085059 =
+  {
+    category : Text;
+    description : Text;
+    discountPriceINR : Nat;
+    imageUrl : Text;
+    name : Text;
+    priceINR : Nat;
+    stockQuantity : Nat
+  };
+type Review__422344017 =
+  {
+    comment : Text;
+    createdAt : Int;
+    customerId : Principal;
+    productId : Nat;
+    rating : Nat;
+    status : Text
+  };
+type UserRole__1054455867 = {#admin; #guest; #user};
+actor {
+  stable var _profilesMigrated : Bool;
+  stable accessControlState :
+    {
+      var adminAssigned : Bool;
+      userRoles : Map__605269027<Principal, UserRole__1054455867>
+    };
+  stable couponUsage :
+    {var root : Node__46230540<Text, Nat>; var size : Nat__490723111};
+  stable coupons :
+    {
+      var root : Node__46230540<Nat, Coupon__100505319>;
+      var size : Nat__490723111
+    };
+  stable customerProfiles :
+    {
+      var root : Node__46230540<Principal, CustomerProfileV1__1028482321>;
+      var size : Nat__490723111
+    };
+  stable customerProfilesV2 :
+    {
+      var root : Node__46230540<Principal, CustomerProfile__89315307>;
+      var size : Nat__490723111
+    };
+  stable deletedOrders :
+    {
+      var root : Node__46230540<Nat, Order__762448211>;
+      var size : Nat__490723111
+    };
+  stable deliveryRules :
+    {
+      var root : Node__46230540<Nat, DeliveryRule__253128428>;
+      var size : Nat__490723111
+    };
+  stable var nextCouponId : Nat;
+  stable var nextDeliveryRuleId : Nat;
+  stable var nextOrderId : Nat;
+  stable var nextProductId : Nat;
+  stable var nextReviewId : Nat;
+  stable orders :
+    {
+      var root : Node__46230540<Nat, OrderV1__793055768>;
+      var size : Nat__490723111
+    };
+  stable ordersV2 :
+    {
+      var root : Node__46230540<Nat, Order__762448211>;
+      var size : Nat__490723111
+    };
+  stable products :
+    {
+      var root : Node__46230540<Nat, Product__853085059>;
+      var size : Nat__490723111
+    };
+  stable var razorpayKeyId : Text;
+  stable var razorpayKeySecret : Text;
+  stable reviews :
+    {
+      var root : Node__46230540<Nat, Review__422344017>;
+      var size : Nat__490723111
+    }
+};

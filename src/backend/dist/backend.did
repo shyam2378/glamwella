@@ -1,0 +1,220 @@
+type http_request_result = 
+ record {
+   body: blob;
+   headers: vec http_header;
+   status: nat;
+ };
+type http_header = 
+ record {
+   name: text;
+   value: text;
+ };
+type UserRole = 
+ variant {
+   admin;
+   guest;
+   user;
+ };
+type TransformationOutput = 
+ record {
+   body: blob;
+   headers: vec http_header;
+   status: nat;
+ };
+type TransformationInput = 
+ record {
+   context: blob;
+   response: http_request_result;
+ };
+type Review = 
+ record {
+   comment: text;
+   createdAt: int;
+   customerId: principal;
+   productId: nat;
+   rating: nat;
+   status: text;
+ };
+type Product = 
+ record {
+   category: text;
+   description: text;
+   discountPriceINR: nat;
+   imageUrl: text;
+   name: text;
+   priceINR: nat;
+   stockQuantity: nat;
+ };
+type OrderItem = 
+ record {
+   price: nat;
+   productId: nat;
+   quantity: nat;
+ };
+type Order = 
+ record {
+   address: text;
+   city: text;
+   createdAt: int;
+   customerId: principal;
+   customerName: text;
+   items: vec OrderItem;
+   landmark: text;
+   phone: text;
+   pincode: text;
+   razorpayOrderId: text;
+   status: text;
+   totalINR: nat;
+ };
+type DeliveryRule = 
+ record {
+   chargeINR: nat;
+   isDefault: bool;
+   zoneOrPincode: text;
+ };
+type CustomerProfile = 
+ record {
+   address: text;
+   city: text;
+   gmail: text;
+   landmark: text;
+   name: text;
+   phone: text;
+   pincode: text;
+   profileComplete: bool;
+ };
+type Coupon = 
+ record {
+   code: text;
+   discountAmountINR: nat;
+   isActive: bool;
+   maxUsesPerUser: nat;
+ };
+service : {
+  _initializeAccessControl: () -> ();
+  addCoupon: (coupon: Coupon) -> (nat);
+  addDeliveryRule: (rule: DeliveryRule) -> (nat);
+  addProduct: (product: Product) -> (nat);
+  adminLogin: (username: text, password: text) ->
+   (variant {
+      err: text;
+      ok: text;
+    }) query;
+  approveReview: (reviewId: nat) -> (variant {
+                                       err: text;
+                                       ok;
+                                     });
+  assignCallerUserRole: (user: principal, role: UserRole) -> ();
+  createOrUpdateProfile: (profile: CustomerProfile) -> ();
+  createOrder: (items: vec OrderItem, totalINR: nat, razorpayOrderId: 
+   text, customerName: text, phone: text, address: text, city: text, pincode:
+   text, landmark: text) -> (opt nat);
+  createRazorpayOrder: (amountPaise: nat, receipt: text) ->
+   (variant {
+      err: text;
+      ok: text;
+    });
+  deleteCoupon: (id: nat) -> ();
+  deleteDeliveryRule: (id: nat) -> ();
+  deleteProduct: (id: nat) -> ();
+  deleteReview: (reviewId: nat) -> (variant {
+                                      err: text;
+                                      ok;
+                                    });
+  filterProductsByCategory: (category: text) ->
+   (vec record {
+          nat;
+          Product;
+        }) query;
+  getAllOrders: () -> (vec record {
+                             nat;
+                             Order;
+                           }) query;
+  getApprovedReviewsForProduct: (productId: nat) -> (vec Review) query;
+  getCallerUserProfile: () -> (opt CustomerProfile) query;
+  getCallerUserRole: () -> (UserRole) query;
+  getCompletedOrders: () -> (vec record {
+                                   nat;
+                                   Order;
+                                 }) query;
+  getCoupons: () -> (vec record {
+                           nat;
+                           Coupon;
+                         }) query;
+  getCustomerReviews: () -> (vec Review) query;
+  getDeletedOrders: () -> (vec record {
+                                 nat;
+                                 Order;
+                               }) query;
+  getDeliveryChargeForPincode: (pincode: text) -> (nat) query;
+  getDeliveryRules: () -> (vec record {
+                                 nat;
+                                 DeliveryRule;
+                               }) query;
+  getMyOrders: () -> (vec record {
+                            nat;
+                            Order;
+                          }) query;
+  getMyProfile: () -> (opt CustomerProfile) query;
+  getOrderById: (orderId: nat) -> (opt Order) query;
+  getOrdersSortedById: () -> (vec record {
+                                    nat;
+                                    Order;
+                                  }) query;
+  getOrdersSortedByTotal: () -> (vec record {
+                                       nat;
+                                       Order;
+                                     }) query;
+  getPendingOrders: () -> (vec record {
+                                 nat;
+                                 Order;
+                               }) query;
+  getPendingReviews: () -> (vec record {
+                                  nat;
+                                  Review;
+                                }) query;
+  getProductById: (id: nat) -> (opt Product) query;
+  getProducts: () -> (vec record {
+                            nat;
+                            Product;
+                          }) query;
+  getProductsSortedByName: () -> (vec record {
+                                        nat;
+                                        Product;
+                                      }) query;
+  getProductsSortedByPrice: () -> (vec record {
+                                         nat;
+                                         Product;
+                                       }) query;
+  getProfile: (user: principal) -> (opt CustomerProfile) query;
+  getRazorpayKeys: () -> (text, text) query;
+  getUserProfile: (user: principal) -> (opt CustomerProfile) query;
+  hasCouponBeenUsed: (code: text) -> (bool) query;
+  isCallerAdmin: () -> (bool) query;
+  redeemCoupon: (code: text) -> (variant {
+                                   err: text;
+                                   ok;
+                                 });
+  saveCallerUserProfile: (profile: CustomerProfile) -> ();
+  searchProducts: (searchText: text) -> (vec record {
+                                               nat;
+                                               Product;
+                                             }) query;
+  setRazorpayKeys: (keyId: text, keySecret: text) -> ();
+  softDeleteOrders: (orderIds: vec nat) -> (bool);
+  submitReview: (productId: nat, rating: nat, comment: text) ->
+   (variant {
+      err: text;
+      ok: nat;
+    });
+  transform: (input: TransformationInput) -> (TransformationOutput) query;
+  updateCoupon: (id: nat, coupon: Coupon) -> ();
+  updateDeliveryRule: (id: nat, rule: DeliveryRule) -> ();
+  updateOrderStatus: (orderId: nat, status: text) -> (bool);
+  updateProduct: (id: nat, product: Product) -> ();
+  validateAdminToken: (token: text) -> (bool) query;
+  validateCoupon: (code: text) -> (variant {
+                                     err: text;
+                                     ok: nat;
+                                   }) query;
+}
